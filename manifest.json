@@ -1,0 +1,37 @@
+{
+  "name": "Personal Trainer Avançado Pro",
+  "short_name": "PT Avançado",
+  "description": "E-book interativo de personal trainer com acesso, progresso, ferramentas e acompanhamento.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "lang": "pt-BR",
+  "categories": [
+    "education",
+    "fitness",
+    "health"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

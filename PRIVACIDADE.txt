@@ -1,0 +1,10 @@
+POLÍTICA DE PRIVACIDADE — MODELO PARA PERSONALIZAÇÃO
+
+Dados coletados: nome, e-mail, telefone, CPF, dados de acesso, plano, pagamentos e progresso no e-book.
+Finalidades: criar e proteger a conta, identificar pagamentos, liberar conteúdo, prestar suporte e cumprir obrigações legais.
+Segurança: o CPF deve ser restrito ao titular, ao administrador autorizado e ao backend. Nunca deve ser publicado em URLs, relatórios públicos ou telas abertas.
+Compartilhamento: dados mínimos de pagamento poderão ser enviados ao processador Mercado Pago para criar e confirmar cobranças Pix.
+Direitos: o titular poderá solicitar acesso, correção e exclusão, observadas obrigações legais de retenção.
+Contato do controlador: PREENCHER NOME, CPF/CNPJ, E-MAIL E CANAL DE ATENDIMENTO.
+
+IMPORTANTE: este é um modelo técnico inicial, não aconselhamento jurídico. Revise com profissional habilitado antes da publicação.
