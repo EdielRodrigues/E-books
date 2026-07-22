@@ -13,7 +13,7 @@ window.APP_CONFIG = {
   },
   // Preencha com a URL pública do backend no Render, sem barra no final.
   // Exemplo: https://personal-trainer-pix.onrender.com
-  functionsBaseUrl: "",
+  functionsBaseUrl: "https://personal-trainer-pix-backend-5.onrender.com",
   currency: "BRL",
   plans: {
     mensal: { name: "Plano Mensal", value: 19.90, days: 30 },
