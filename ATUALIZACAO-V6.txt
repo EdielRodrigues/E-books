@@ -1,0 +1,7 @@
+ATUALIZAÇÃO V6.1
+
+- Cadastro novo recebe 3 dias de acesso promocional limitado.
+- Depois do vencimento, o usuário é levado para a página de pagamento.
+- Consulta do Pix é automática a cada 5 segundos.
+- Ao Mercado Pago confirmar como aprovado, o acesso é liberado e o aplicativo abre automaticamente.
+- O botão “Verificar pagamento” foi removido.

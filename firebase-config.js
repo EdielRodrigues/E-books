@@ -15,6 +15,7 @@ window.APP_CONFIG = {
   // Exemplo: https://personal-trainer-pix.onrender.com
   functionsBaseUrl: "https://personal-trainer-pix-backend-5.onrender.com",
   currency: "BRL",
+  mercadoPagoPublicKey: "APP_USR-d01253a3-d065-420b-8b74-d9d4e6cec0f8",
   plans: {
     mensal: { name: "Plano Mensal", value: 19.90, days: 30 },
     trimestral: { name: "Plano Trimestral", value: 49.90, days: 90 },

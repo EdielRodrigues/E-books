@@ -1,0 +1,5 @@
+VERSÃO 7.1
+- Mensagens de recusa do cartão em português.
+- Códigos técnicos não aparecem para o cliente.
+- Botão Pagar com Pix aparece após cartão recusado ou cancelado.
+- Pix e cartão continuam com liberação automática após aprovação.
