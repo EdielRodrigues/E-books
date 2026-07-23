@@ -1,0 +1,6 @@
+ATUALIZAÇÃO V7.8 — ATUALIZAÇÃO OBRIGATÓRIA
+
+O aplicativo consulta /appUpdate no Firebase.
+Quando minimumVersion for maior que 7.8 e forceUpdate estiver ativo, a tela inteira é bloqueada e aparece o botão Atualizar agora.
+O botão abre o link do APK configurado no painel.
+O Android instala a nova versão por cima da antiga quando o APK usa o mesmo pacote e a mesma assinatura.

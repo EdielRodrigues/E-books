@@ -1,6 +1,7 @@
 (() => {
   const cfg = window.APP_CONFIG;
   const $ = s => document.querySelector(s);
+  const APP_VERSION='7.8';
   let auth, db, currentUser, currentProfile = {}, currentPayment = null, selectedPlanId = null, selectedPlan = null, presenceTimer = null, presenceRef = null, pixCheckTimer = null, pixChecking = false, mp = null, cardBrickController = null, paymentFlowStarted = false;
 
   const money = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: cfg.currency || 'BRL' });
@@ -13,6 +14,20 @@
   function show(id){['authGate','accessGate','appContent'].forEach(x=>$('#'+x)?.classList.add('hidden'));$('#'+id)?.classList.remove('hidden')}
   function active(u){return u&&u.status==='ativo'&&(!u.expiresAt||new Date(u.expiresAt)>new Date())}
   function daysLeft(v){if(!v)return null;return Math.max(0,Math.ceil((new Date(v)-new Date())/86400000))}
+
+  function versionParts(v){return String(v||'0').split(/[^0-9]+/).filter(Boolean).map(Number)}
+  function compareVersions(a,b){const x=versionParts(a),y=versionParts(b),n=Math.max(x.length,y.length);for(let i=0;i<n;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d>0?1:-1}return 0}
+  function applyForceUpdate(settings){
+    const min=String(settings?.minimumVersion||settings?.latestVersion||APP_VERSION);
+    const enabled=settings?.forceUpdate!==false;
+    const outdated=enabled&&compareVersions(APP_VERSION,min)<0;
+    const gate=$('#forceUpdateGate');if(!gate)return;
+    $('#installedVersion').textContent=APP_VERSION;$('#requiredVersion').textContent=min;
+    $('#forceUpdateMessage').textContent=settings?.message||'Uma atualização importante está disponível. Atualize para continuar usando o aplicativo.';
+    const btn=$('#forceUpdateNow');btn.onclick=()=>{const url=clean(settings?.apkUrl||settings?.updateUrl);if(!url)return toast('O link da atualização ainda não foi configurado.',true);location.href=url};
+    gate.classList.toggle('hidden',!outdated);document.documentElement.style.overflow=outdated?'hidden':'';document.body.style.overflow=outdated?'hidden':'';
+  }
+  function watchAppUpdate(){db.ref('appUpdate').on('value',snap=>applyForceUpdate(snap.val()||{}),()=>applyForceUpdate({forceUpdate:false}))}
 
   function renderPlans(){const box=$('#planButtons');if(!box)return;box.innerHTML=Object.entries(cfg.plans||{}).map(([id,p])=>`<button type="button" class="pix-plan" data-plan="${id}"><span>${p.name}</span><b>${money(p.value)}</b><small>${p.days>=36500?'Acesso permanente':p.days+' dias de acesso'}</small></button>`).join('');box.querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>selectPlan(b.dataset.plan))}
   function selectPlan(planId){paymentFlowStarted=true;selectedPlanId=planId;selectedPlan=cfg.plans?.[planId];if(!selectedPlan)return toast('Plano inválido.',true);$('#plansArea').classList.add('hidden');$('#paymentMethodPanel').classList.remove('hidden');$('#pixPanel').classList.add('hidden');$('#cardPanel').classList.add('hidden');$('#tryPixAfterCard')?.classList.add('hidden')}
@@ -151,7 +166,7 @@
   async function login(e){e.preventDefault();const d=Object.fromEntries(new FormData(e.target));try{await auth.signInWithEmailAndPassword(clean(d.email),d.password)}catch{toast('E-mail ou senha inválidos.',true)}}
   async function resetPassword(){const email=clean($('#loginPanel [name=email]')?.value);if(!email)return toast('Digite seu e-mail primeiro.',true);try{await auth.sendPasswordResetEmail(email);toast('Link de recuperação enviado para seu e-mail.')}catch(e){toast('Não foi possível enviar a recuperação.',true)}}
   async function logout(){paymentFlowStarted=false;currentPayment=null;stopPixAutoCheck();stopPresence();await auth.signOut()}
-  function init(){firebase.initializeApp(cfg.firebase);auth=firebase.auth();db=firebase.database();auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});auth.onAuthStateChanged(async u=>{currentUser=u;paymentFlowStarted=false;if(!u){stopPresence();resetPaymentEntry();return show('authGate')}startPresence(u);await db.ref('users/'+u.uid).update({lastAccess:firebase.database.ServerValue.TIMESTAMP}).catch(()=>{});db.ref('users/'+u.uid).on('value',s=>{if(!s.exists()){show('authGate');toast('Cadastro não encontrado no banco de dados.',true);return}render(s.val())})})}
+  function init(){firebase.initializeApp(cfg.firebase);auth=firebase.auth();db=firebase.database();watchAppUpdate();db.ref('guideVideos').on('value',snap=>{window.PT_GUIDE_VIDEOS=snap.val()||{};window.dispatchEvent(new Event('pt-guide-videos-updated'))});auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});auth.onAuthStateChanged(async u=>{currentUser=u;paymentFlowStarted=false;if(!u){stopPresence();resetPaymentEntry();return show('authGate')}startPresence(u);await db.ref('users/'+u.uid).update({lastAccess:firebase.database.ServerValue.TIMESTAMP}).catch(()=>{});db.ref('users/'+u.uid).on('value',s=>{if(!s.exists()){show('authGate');toast('Cadastro não encontrado no banco de dados.',true);return}render(s.val())})})}
 
   document.addEventListener('DOMContentLoaded',()=>{
     const openAccount=()=>{
