@@ -1,4 +1,4 @@
-const CACHE='pt-cliente-v6-1-auto-pix-v7';
+const CACHE='pt-cliente-v7-3-pagamento-sob-escolha';
 const ASSETS=['./','index.html','style.css','data.js','app.js','platform.js','firebase-config.js','manifest.json','icon-192.png','icon-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
