@@ -1,0 +1,19 @@
+COLOQUE OS VÍDEOS CURTOS NESTA PASTA
+
+Use exatamente estes nomes:
+
+01-primeiros-passos.mp4
+02-aquecimento.mp4
+03-agachamento.mp4
+04-flexao.mp4
+05-prancha.mp4
+06-recuperacao.mp4
+
+Recomendação:
+- Formato: MP4
+- Vídeo vertical ou horizontal
+- Duração: 20 a 60 segundos
+- Tamanho pequeno para carregar rápido
+
+Depois de colocar os vídeos, envie a pasta inteira do aplicativo para o site.
+Não precisa editar código nem adicionar link.
