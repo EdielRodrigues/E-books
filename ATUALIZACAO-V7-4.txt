@@ -1,8 +1,0 @@
-PERSONAL TRAINER CLIENTE V7.4
-
-- Nova área Guia para Iniciantes.
-- Passo a passo com imagens locais e funcionamento offline.
-- Conteúdo: primeiros passos, aquecimento, agachamento, flexão adaptada, prancha e recuperação.
-- Área de vídeos curtos preparada no arquivo guia-iniciante/videos.js.
-- Novo botão no menu e na página inicial.
-- Cache PWA atualizado.
