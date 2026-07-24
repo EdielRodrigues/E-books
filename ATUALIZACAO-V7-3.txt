@@ -1,8 +1,0 @@
-ATUALIZAÇÃO V7.3 — PAGAMENTO SOMENTE POR ESCOLHA DO CLIENTE
-
-- Ao entrar novamente, um Pix pendente, recusado, cancelado ou não pago não é reaberto automaticamente.
-- O aplicativo não restaura nem consulta automaticamente tentativas antigas ao iniciar uma nova sessão.
-- O Pix somente é gerado depois que o cliente escolhe um plano, escolhe Pix e toca para pagar.
-- A consulta automática continua funcionando enquanto a tela do Pix recém-gerado estiver aberta.
-- Cartão pendente ou recusado também não é reaberto automaticamente em um novo acesso.
-- O histórico de pagamentos continua preservado.
