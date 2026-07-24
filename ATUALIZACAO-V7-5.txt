@@ -1,7 +1,0 @@
-ATUALIZAÇÃO V7.5
-
-- Imagens abertas diretamente em cada etapa do Guia para Iniciantes.
-- Vídeo curto aparece dentro do mesmo cartão, logo abaixo da imagem.
-- Sem seção separada de vídeos para o aluno.
-- Suporte a YouTube, Shorts e arquivos MP4/WebM/Ogg.
-- Quando o link ainda não foi colocado, aparece um espaço organizado dentro da própria aula.
