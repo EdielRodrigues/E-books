@@ -1,8 +1,8 @@
 (() => {
   const cfg = window.APP_CONFIG;
   const $ = s => document.querySelector(s);
-  const APP_VERSION='7.8';
-  let auth, db, currentUser, currentProfile = {}, currentPayment = null, selectedPlanId = null, selectedPlan = null, presenceTimer = null, presenceRef = null, pixCheckTimer = null, pixChecking = false, mp = null, cardBrickController = null, paymentFlowStarted = false;
+  const APP_VERSION='8.0';
+  let auth, db, currentUser, currentProfile = {}, currentPayment = null, selectedPlanId = null, selectedPlan = null, presenceTimer = null, presenceRef = null, pixCheckTimer = null, pixChecking = false, mp = null, cardBrickController = null, paymentFlowStarted = false, selectedCardType = 'credit_card';
 
   const money = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: cfg.currency || 'BRL' });
   const clean = v => String(v || '').trim();
@@ -74,23 +74,24 @@
     checkPixAuto();
     pixCheckTimer=setInterval(checkPixAuto,5000);
   }
-  async function openCardPayment(){
+  async function openCardPayment(cardType='credit_card'){
+    selectedCardType=cardType==='debit_card'?'debit_card':'credit_card';
     if(!selectedPlanId||!selectedPlan)return toast('Escolha um plano.',true);
     if(!window.MercadoPago||!cfg.mercadoPagoPublicKey)return toast('Pagamento por cartão não configurado.',true);
     stopPixAutoCheck();$('#paymentMethodPanel').classList.add('hidden');$('#pixPanel').classList.add('hidden');$('#cardPanel').classList.remove('hidden');
-    $('#cardPlanName').textContent=selectedPlan.name;$('#cardAmount').textContent=money(selectedPlan.value);$('#cardStatus').textContent='';$('#tryPixAfterCard')?.classList.add('hidden');
+    $('#cardPaymentTypeLabel').textContent=selectedCardType==='debit_card'?'CARTÃO DE DÉBITO':'CARTÃO DE CRÉDITO';$('#cardPlanName').textContent=selectedPlan.name;$('#cardAmount').textContent=money(selectedPlan.value);$('#cardStatus').textContent='';$('#tryPixAfterCard')?.classList.add('hidden');
     try{
       cardBrickController?.unmount?.();
       mp=mp||new MercadoPago(cfg.mercadoPagoPublicKey,{locale:'pt-BR'});
       cardBrickController=await mp.bricks().create('cardPayment','cardPaymentBrick_container',{
         initialization:{amount:Number(selectedPlan.value)},
-        customization:{visual:{style:{theme:'default'}},paymentMethods:{maxInstallments:12}},
+        customization:{visual:{style:{theme:'default'}},paymentMethods:{maxInstallments:selectedCardType==='debit_card'?1:12}},
         callbacks:{
           onReady:()=>{},
           onSubmit:async cardFormData=>{
             const el=$('#cardStatus');el.textContent='Processando pagamento…';el.className='pix-status pending';
             try{
-              const out=await api('/createCardPayment',{method:'POST',body:JSON.stringify({planId:selectedPlanId,...cardFormData})});
+              const out=await api('/createCardPayment',{method:'POST',body:JSON.stringify({planId:selectedPlanId,requestedPaymentType:selectedCardType,...cardFormData})});
               currentPayment=out.payment;setStatusCard(out.payment.status,out.payment.statusDetail);
               if(out.payment.status==='approved'){
                 toast('Pagamento aprovado! Acesso liberado.');
@@ -125,7 +126,7 @@
     $('#tryPixAfterCard')?.classList.toggle('hidden',!['rejected','cancelled'].includes(status));
     if(detail)console.warn('Detalhe técnico do pagamento:',detail);
   }
-  async function loadPaymentHistory(){if(!db||!currentUser||!$('#paymentHistory'))return;try{const s=await db.ref('payments').orderByChild('userId').equalTo(currentUser.uid).limitToLast(10).once('value');const a=Object.entries(s.val()||{}).map(([id,v])=>({id,...v})).sort((x,y)=>new Date(y.createdAt||0)-new Date(x.createdAt||0));$('#paymentHistory').innerHTML=a.length?a.map(p=>`<div class="history-row"><span><b>${p.planName||p.planId||'Plano'} • ${p.paymentMethod==='card'?'Cartão':'Pix'}</b><small>${p.createdAt?new Date(p.createdAt).toLocaleString('pt-BR'):''}</small></span><strong>${money(p.amount)}</strong><em class="status-${p.status}">${p.status||'—'}</em></div>`).join(''):'<p>Nenhum pagamento encontrado.</p>'}catch(e){$('#paymentHistory').innerHTML='<p>Não foi possível carregar o histórico.</p>'}}
+  async function loadPaymentHistory(){if(!db||!currentUser||!$('#paymentHistory'))return;try{const s=await db.ref('payments').orderByChild('userId').equalTo(currentUser.uid).limitToLast(10).once('value');const a=Object.entries(s.val()||{}).map(([id,v])=>({id,...v})).sort((x,y)=>new Date(y.createdAt||0)-new Date(x.createdAt||0));$('#paymentHistory').innerHTML=a.length?a.map(p=>`<div class="history-row"><span><b>${p.planName||p.planId||'Plano'} • ${p.paymentMethod==='debit_card'?'Débito':p.paymentMethod==='credit_card'||p.paymentMethod==='card'?'Crédito':'Pix'}</b><small>${p.createdAt?new Date(p.createdAt).toLocaleString('pt-BR'):''}</small></span><strong>${money(p.amount)}</strong><em class="status-${p.status}">${p.status||'—'}</em></div>`).join(''):'<p>Nenhum pagamento encontrado.</p>'}catch(e){$('#paymentHistory').innerHTML='<p>Não foi possível carregar o histórico.</p>'}}
 
 
   function startPresence(user){
@@ -196,7 +197,7 @@
     $('#forgotPassword')?.addEventListener('click',resetPassword);
     document.querySelectorAll('[data-logout]').forEach(b=>b.addEventListener('click',logout));
     $('#copyPix')?.addEventListener('click',async()=>{const v=$('#pixCode')?.value;if(!v)return;try{await navigator.clipboard.writeText(v)}catch{$('#pixCode')?.select();document.execCommand('copy')}toast('Pix copiado.')});
-    $('#payWithPix')?.addEventListener('click',()=>createPix(selectedPlanId));$('#payWithCard')?.addEventListener('click',openCardPayment);$('#tryPixAfterCard')?.addEventListener('click',()=>{cardBrickController?.unmount?.();cardBrickController=null;createPix(selectedPlanId)});$('#changePlan')?.addEventListener('click',backToPlans);$('#cancelPix')?.addEventListener('click',backToMethods);$('#cancelCard')?.addEventListener('click',backToMethods);
+    $('#payWithPix')?.addEventListener('click',()=>createPix(selectedPlanId));$('#payWithCard')?.addEventListener('click',()=>openCardPayment('credit_card'));$('#payWithDebit')?.addEventListener('click',()=>openCardPayment('debit_card'));$('#tryPixAfterCard')?.addEventListener('click',()=>{cardBrickController?.unmount?.();cardBrickController=null;createPix(selectedPlanId)});$('#changePlan')?.addEventListener('click',backToPlans);$('#cancelPix')?.addEventListener('click',backToMethods);$('#cancelCard')?.addEventListener('click',backToMethods);
     init();
   });
 })();

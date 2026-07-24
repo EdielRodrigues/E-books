@@ -1,4 +1,4 @@
-const CACHE='pt-client-v7-8';
+const CACHE='pt-client-v8-8';
 const ASSETS=['./','index.html','style.css','data.js','app.js','platform.js','firebase-config.js','manifest.json','icon-192.png','icon-512.png','guia-iniciante/imagens/01-primeiros-passos.png','guia-iniciante/imagens/02-aquecimento.png','guia-iniciante/imagens/03-agachamento.png','guia-iniciante/imagens/04-flexao.png','guia-iniciante/imagens/05-prancha.png','guia-iniciante/imagens/06-recuperacao.png','guia-iniciante/videos.js'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});

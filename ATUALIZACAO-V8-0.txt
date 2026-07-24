@@ -1,0 +1,9 @@
+PERSONAL TRAINER V8.0
+
+- Adicionado pagamento por cartão de débito.
+- Mantidos Pix e cartão de crédito.
+- Débito processado à vista.
+- Painel identifica Pix, crédito e débito separadamente.
+- Reembolso corrigido: sincroniza o Firebase mesmo quando o Mercado Pago já devolveu o dinheiro.
+- Impede mensagem falsa de erro e reembolso duplicado.
+- Versão do e-book atualizada para 8.0.
