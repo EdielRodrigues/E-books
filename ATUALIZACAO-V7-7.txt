@@ -1,6 +1,0 @@
-VERSÃO 7.7 — VÍDEOS POR LINK
-
-- Os vídeos do Guia para Iniciantes são controlados pelo painel.
-- Aceita links do YouTube, Shorts, youtu.be e links diretos MP4.
-- O vídeo abre dentro do aplicativo em player de tela inteira.
-- Publique também database.rules.json para permitir a leitura e a edição dos links.
