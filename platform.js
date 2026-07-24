@@ -85,7 +85,17 @@
       mp=mp||new MercadoPago(cfg.mercadoPagoPublicKey,{locale:'pt-BR'});
       cardBrickController=await mp.bricks().create('cardPayment','cardPaymentBrick_container',{
         initialization:{amount:Number(selectedPlan.value)},
-        customization:{visual:{style:{theme:'default'}},paymentMethods:{maxInstallments:selectedCardType==='debit_card'?1:12}},
+        customization:{
+          visual:{style:{theme:'default'}},
+          paymentMethods:{
+            maxInstallments:selectedCardType==='debit_card'?1:12,
+            types:{
+              excluded:selectedCardType==='debit_card'
+                ? ['credit_card','prepaid_card']
+                : ['debit_card','prepaid_card']
+            }
+          }
+        },
         callbacks:{
           onReady:()=>{},
           onSubmit:async cardFormData=>{

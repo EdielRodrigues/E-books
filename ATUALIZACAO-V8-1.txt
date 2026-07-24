@@ -1,0 +1,7 @@
+PERSONAL TRAINER — V8.1
+
+- Corrigida a separação entre cartão de crédito e cartão de débito.
+- Ao escolher Débito, o formulário aceita somente cartão classificado pelo Mercado Pago como debit_card.
+- Ao escolher Crédito, o formulário aceita somente cartão classificado como credit_card.
+- Débito permanece à vista, sem parcelamento.
+- Atualizado o cache do PWA.
