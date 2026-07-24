@@ -1,7 +1,0 @@
-VERSÃO 7 — PIX + CARTÃO
-
-- Pix com confirmação automática.
-- Cartão de crédito com Mercado Pago Card Payment Brick.
-- Parcelamento em até 12 vezes, conforme disponibilidade do emissor.
-- Acesso liberado automaticamente quando aprovado.
-- 3 dias promocionais preservados.
