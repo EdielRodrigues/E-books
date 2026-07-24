@@ -1,6 +1,0 @@
-VERSÃO 7.6 — MÍDIA LOCAL
-
-- Imagens em PNG dentro de guia-iniciante/imagens.
-- Vídeos preparados para arquivos MP4 locais dentro de guia-iniciante/videos.
-- Não usa links externos para o Guia do Iniciante.
-- Basta colocar os vídeos com os nomes indicados no LEIA-ME e subir a pasta inteira.
